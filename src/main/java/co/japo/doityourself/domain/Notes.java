@@ -13,6 +13,14 @@ public class Notes {
     @OneToOne
     private Recipe recipe;
 
+    public Notes(){
+
+    }
+
+    public Notes(String notes){
+        this.notes = notes;
+    }
+
     public Long getId() {
         return id;
     }
