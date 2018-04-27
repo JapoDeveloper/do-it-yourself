@@ -1,6 +1,7 @@
 package co.japo.doityourself.controllers;
 
 import co.japo.doityourself.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.logging.Logger;
 
+@Slf4j
 @Controller
 public class RecipeController {
 
-    private static final Logger LOG = Logger.getLogger(RecipeController.class.getName());
     private RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService){
@@ -20,7 +21,7 @@ public class RecipeController {
 
     @RequestMapping("/recipes")
     public String listRecipes(Model model){
-        LOG.info("Method listRecipes(Model model) of RecipeController class was invoked.");
+        log.info("List recipes endpoint of RecipeController class was invoked.");
         model.addAttribute("allRecipes", recipeService.list());
         return "recipes";
     }

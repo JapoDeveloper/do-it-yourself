@@ -4,15 +4,18 @@ import co.japo.doityourself.domain.*;
 import co.japo.doityourself.repositories.CategoryRepository;
 import co.japo.doityourself.repositories.RecipeRepository;
 import co.japo.doityourself.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 
+@Slf4j
 @Component
 public class RecipesBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -28,9 +31,12 @@ public class RecipesBootstrap implements ApplicationListener<ContextRefreshedEve
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.debug("Init recipes bootstraping...");
         recipeRepository.save(getGuacamoleRecipe());
         recipeRepository.save(getSpicyGrilledChickenTacosRecipe());
+        log.debug("End of recipes bootstraping...");
     }
 
     public Recipe getGuacamoleRecipe(){

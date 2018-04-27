@@ -1,7 +1,11 @@
 package co.japo.doityourself.domain;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 public class Notes {
 
@@ -21,36 +25,5 @@ public class Notes {
         this.notes = notes;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
-    @Override
-    public String toString() {
-        return "Notes{" +
-                "id=" + id +
-                ", notes='" + notes + '\'' +
-                ", recipe=" + recipe +
-                '}';
-    }
 }
