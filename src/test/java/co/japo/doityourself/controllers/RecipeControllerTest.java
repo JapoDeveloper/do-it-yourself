@@ -46,7 +46,7 @@ public class RecipeControllerTest {
         MockMvc mock = MockMvcBuilders.standaloneSetup(recipeController).build();
         mock.perform(get("/recipes"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("list-recipes"));
+                .andExpect(view().name("recipe/list"));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class RecipeControllerTest {
         when(recipeService.list()).thenReturn(RECIPES);
 
         //then
-        assertEquals("list-recipes",recipeController.listRecipes(model));
+        assertEquals("recipe/list",recipeController.listRecipes(model));
         verify(recipeService,times(1)).list();
         verify(model,times(1)).addAttribute(eq("allRecipes"),listCaptor.capture());
         assertEquals(RECIPES.size(),listCaptor.getValue().size());
