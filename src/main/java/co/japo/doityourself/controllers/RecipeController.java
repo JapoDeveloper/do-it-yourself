@@ -23,6 +23,6 @@ public class RecipeController {
     public String listRecipes(Model model){
         log.info("List recipes endpoint of RecipeController class was invoked.");
         model.addAttribute("allRecipes", recipeService.list());
-        return "recipes";
+        return "list-recipes";
     }
 }
