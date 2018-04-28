@@ -5,6 +5,7 @@ import co.japo.doityourself.repositories.CategoryRepository;
 import co.japo.doityourself.repositories.RecipeRepository;
 import co.japo.doityourself.repositories.UnitOfMeasureRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.omg.CORBA.portable.OutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +13,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashSet;
 
 @Slf4j
@@ -85,7 +89,14 @@ public class RecipesBootstrap implements ApplicationListener<ContextRefreshedEve
         perfectGuacamole.setServings(2);
         perfectGuacamole.setSource("Simply Recipes");
         perfectGuacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
-
+        File perfectGuacamoleImage = new File(this.getClass().getResource("/images/perfect_guacamole.jpg").getFile());
+        try(InputStream in = new FileInputStream(perfectGuacamoleImage)){
+            byte[] b = new byte[(int)perfectGuacamoleImage.length()];
+            in.read(b);
+            perfectGuacamole.setImage(b);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         return perfectGuacamole;
     }
 
@@ -148,6 +159,14 @@ public class RecipesBootstrap implements ApplicationListener<ContextRefreshedEve
         sgct.setSource("Simply Recipes");
         sgct.setUrl("https://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
 
+        File spicyGrilledImage = new File(this.getClass().getResource("/images/spicy_grilled_chicken-tacos.jpg").getFile());
+        try(InputStream in = new FileInputStream(spicyGrilledImage)){
+            byte[] b = new byte[(int) spicyGrilledImage.length()];
+            in.read(b);
+            sgct.setImage(b);
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
         return sgct;
     }
 

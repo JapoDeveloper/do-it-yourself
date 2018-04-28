@@ -1,6 +1,7 @@
 package co.japo.doityourself.controllers;
 
 import co.japo.doityourself.domain.Recipe;
+import co.japo.doityourself.services.DataConverterService;
 import co.japo.doityourself.services.MathService;
 import co.japo.doityourself.services.RecipeService;
 import org.junit.Before;
@@ -39,11 +40,13 @@ public class RecipeControllerTest {
     private Model model;
     @Mock
     private MathService mathService;
+    @Mock
+    private DataConverterService dataConverterService;
 
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        recipeController =  new RecipeController(recipeService,mathService);
+        recipeController =  new RecipeController(recipeService,mathService,dataConverterService);
     }
 
     @Test
