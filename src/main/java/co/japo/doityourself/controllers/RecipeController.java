@@ -34,7 +34,7 @@ public class RecipeController {
     }
 
     @RequestMapping("/recipe/show/{id}")
-    public String getRecipeById(@PathVariable String id, Model model){
+    public String showRecipeById(@PathVariable String id, Model model){
         log.info("Get recipe by id endpoint of RecipeController class was invoked.");
         Optional<Recipe> recipe = recipeService.getById(new Long(id));
         if(recipe.isPresent()) {

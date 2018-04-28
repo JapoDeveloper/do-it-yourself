@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-public class RecipeControllerTest {
+public class RecipeControllerIT {
 
     private RecipeController recipeController;
     @Mock
@@ -98,3 +98,5 @@ public class RecipeControllerTest {
                 .andExpect(model().attributeExists("recipe"));
     }
 }
+
+
