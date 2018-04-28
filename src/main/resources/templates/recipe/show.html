@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Do It Yourself</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+
+
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <p class="text-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> <a href="/" >Go back</a></p>
+                <div class="card">
+                    <h5 class="card-header bg-primary"
+                        th:text="${recipe.description}">Recipe description</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p th:text="'Prep time: '+${recipe.prepTime}+' min'">Prep Time</p>
+                                <p th:text="'Cook time: '+${recipe.cookTime}+' min'">Cook Time</p>
+                                <p th:text="'Servings: '+${recipe.servings}">Servings</p>
+                                <p th:text="'Difficulty: '+${recipe.difficulty}">Difficulty</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Categories</h5>
+                                <ul>
+                                    <li th:remove="all">Category 1</li>
+                                    <li th:remove="all">Category 2</li>
+                                    <li th:remove="all">Category 3</li>
+                                    <li th:each="category : ${recipe.categories}">
+                                        <span th:text="${category.categoryName}">Category name</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <span th:text="${recipe.source}">Source</span> :
+                            <a href="#" th:href="${recipe.url}" target="_blank">Go to source</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <h5 class="card-header bg-success">Ingredients</h5>
+                    <div class="card-body">
+                        <ul>
+                            <li th:remove="all">Amount uom of description</li>
+                            <li th:each="ingredient : ${recipe.ingredients}">
+                                <span th:text="${mathService.decimalToFraction(ingredient.amount)}">amount</span>
+                                <span th:if="${ingredient.uom}" th:text="${ingredient.uom.uom}+' of '" class="text-lowercase">
+                                    unit of measure
+                                </span>
+                                <span th:text="${ingredient.description}" class="text-lowercase">
+                                    description
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <h5 class="card-header bg-warning">Directions</h5>
+                    <div class="card-body">
+                        <p th:utext="${#strings.replace(#strings.escapeJava(recipe.directions),'\n','&lt;br /&gt;')}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget eleifend orci. Duis eget malesuada mi. Etiam in sapien et metus facilisis tempus ut nec enim. Curabitur urna lectus, egestas tincidunt felis molestie, porttitor porttitor arcu. Pellentesque sed diam mattis, rutrum nulla vitae, malesuada urna. Nullam tristique enim risus, ut tincidunt neque convallis sit amet. Donec in iaculis enim.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <h5 class="card-header bg-danger">Notes</h5>
+                    <div class="card-body">
+                        <p th:utext="${#strings.replace(#strings.escapeJava(recipe?.notes?.notes),'\n','&lt;br /&gt;')}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eget eleifend orci. Duis eget malesuada mi. Etiam in sapien et metus facilisis tempus ut nec enim. Curabitur urna lectus, egestas tincidunt felis molestie, porttitor porttitor arcu. Pellentesque sed diam mattis, rutrum nulla vitae, malesuada urna. Nullam tristique enim risus, ut tincidunt neque convallis sit amet. Donec in iaculis enim.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<!--private byte[] image;-->
+
