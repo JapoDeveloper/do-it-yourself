@@ -13,7 +13,7 @@
 
         <div class="row justify-content-center mt-4">
             <div class="col-md-8">
-                <p class="text-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> <a href="/" >Go back</a></p>
+                <p class="text-right"><i class="fa fa-arrow-left" aria-hidden="true"></i> <a href="/" >Return to index</a></p>
                 <div class="card">
                     <h5 class="card-header bg-primary"
                         th:text="${recipe.description}">Recipe description</h5>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="card">
-                    <img class="card-img-top" th:src="${recipeImage}" alt="${recipe.description} image">
+                    <img class="card-img-top" th:src="${recipeImage}" th:alt="${recipe.description}+ ' image'">
                 </div>
             </div>
         </div>

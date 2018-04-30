@@ -1,5 +1,6 @@
 package co.japo.doityourself.controllers;
 
+import co.japo.doityourself.commands.RecipeCommand;
 import co.japo.doityourself.domain.Recipe;
 import co.japo.doityourself.services.DataConverterService;
 import co.japo.doityourself.services.MathService;
@@ -7,7 +8,9 @@ import co.japo.doityourself.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
@@ -33,19 +36,35 @@ public class RecipeController {
         return "recipe/list";
     }
 
-    @RequestMapping("/recipe/show/{id}")
+    @RequestMapping("/recipe/new")
+    public String createNewRecipe(Model model){
+        model.addAttribute("recipe",new RecipeCommand());
+        return "recipe/save";
+    }
+
+    @RequestMapping("/recipe/{id}/show")
     public String showRecipeById(@PathVariable String id, Model model){
-        log.info("Get recipe by id endpoint of RecipeController class was invoked.");
-        Optional<Recipe> recipe = recipeService.getById(new Long(id));
-        if(recipe.isPresent()) {
-            model.addAttribute("recipe", recipe.get());
+        log.debug("Get recipe by id endpoint of RecipeController class was invoked.");
+            Recipe recipe = recipeService.getById(new Long(id));
+            model.addAttribute("recipe", recipe);
             model.addAttribute("mathService", mathService);
-            if (recipe.get().getImage() != null) {
-                model.addAttribute("recipeImage", dataConverterService.getBase64(recipe.get().getImage()));
+            if (recipe.getImage() != null) {
+                model.addAttribute("recipeImage", dataConverterService.getBase64(recipe.getImage()));
             }
             return "recipe/show";
-        }else{
-            throw new RuntimeException("Recipe with id "+id+" doesn't found!");
-        }
+    }
+
+    @RequestMapping("/recipe/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model){
+        log.debug("Update recipe by id endpoint of RecipeController was invoked.");
+            model.addAttribute("recipe", recipeService.getCommandById(new Long(id)));
+            return "recipe/save";
+    }
+
+    @PostMapping("/recipe")
+    public String saveOrUpdateRecipe(@ModelAttribute RecipeCommand recipeCommand){
+        log.debug("Save or update recipe endpoint of RecipeController was invoked.");
+        RecipeCommand saved = recipeService.saveRecipeCommand(recipeCommand);
+        return "redirect:/recipe/"+saved.getId()+"/show";
     }
 }
