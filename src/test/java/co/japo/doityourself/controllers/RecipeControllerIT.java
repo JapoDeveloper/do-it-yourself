@@ -61,45 +61,36 @@ public class RecipeControllerIT {
     @Test
     public void listRecipes() throws Exception{
         //given
-        List<Recipe> recipes = new ArrayList<Recipe>(){
-            {
-                add(new Recipe());
-            }
-        };
-        ArgumentCaptor<List> listCaptor = ArgumentCaptor.forClass(List.class);
+        List<Recipe> recipes = new ArrayList<Recipe>();
+        recipes.add(new Recipe());
 
         //when
         when(recipeService.list()).thenReturn(recipes);
-        MockMvc mock = MockMvcBuilders.standaloneSetup(recipeController).build();
-        mock.perform(get("/"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeExists("allRecipes"))
                 .andExpect(view().name("recipe/list"));
 
         //then
-        assertEquals("recipe/list",recipeController.listRecipes(model));
         verify(recipeService,times(1)).list();
-        verify(model,times(1)).addAttribute(eq("allRecipes"),listCaptor.capture());
-        assertEquals(recipes.size(),listCaptor.getValue().size());
 
     }
 
     @Test
     public void showRecipeById() throws Exception{
         //given
-        Recipe recipe = new Recipe();
+        RecipeCommand recipe = new RecipeCommand();
         recipe.setId(RECIPE_ID);
 
         //when
-        when(recipeService.getById(anyLong())).thenReturn(recipe);
-        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
-        mockMvc.perform(get("/recipe/1/show"))
+        when(recipeService.getCommandById(anyLong())).thenReturn(recipe);
+        mockMvc.perform(get("/recipe/"+RECIPE_ID+"/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
 
         //then
-        assertEquals("recipe/show",recipeController.showRecipeById(RECIPE_ID+"",model));
-        verify(recipeService,times(1)).getById(anyLong());
+        verify(recipeService,times(1)).getCommandById(anyLong());
 
     }
 

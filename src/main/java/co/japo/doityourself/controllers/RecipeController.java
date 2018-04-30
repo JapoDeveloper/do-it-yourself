@@ -42,7 +42,7 @@ public class RecipeController {
     @GetMapping("/recipe/{id}/show")
     public String showRecipeById(@PathVariable String id, Model model){
         log.debug("Get recipe by id endpoint of RecipeController class was invoked.");
-            Recipe recipe = recipeService.getById(new Long(id));
+            RecipeCommand recipe = recipeService.getCommandById(new Long(id));
             model.addAttribute("recipe", recipe);
             model.addAttribute("mathService", mathService);
             if (recipe.getImage() != null) {
