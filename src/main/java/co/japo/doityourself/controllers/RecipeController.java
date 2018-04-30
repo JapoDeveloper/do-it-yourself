@@ -8,10 +8,7 @@ import co.japo.doityourself.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -29,20 +26,20 @@ public class RecipeController {
         this.dataConverterService = dataConverterService;
     }
 
-    @RequestMapping({"","/"})
+    @GetMapping({"","/"})
     public String listRecipes(Model model){
         log.info("List recipes endpoint of RecipeController class was invoked.");
         model.addAttribute("allRecipes", recipeService.list());
         return "recipe/list";
     }
 
-    @RequestMapping("/recipe/new")
+    @GetMapping("/recipe/new")
     public String createNewRecipe(Model model){
         model.addAttribute("recipe",new RecipeCommand());
         return "recipe/save";
     }
 
-    @RequestMapping("/recipe/{id}/show")
+    @GetMapping("/recipe/{id}/show")
     public String showRecipeById(@PathVariable String id, Model model){
         log.debug("Get recipe by id endpoint of RecipeController class was invoked.");
             Recipe recipe = recipeService.getById(new Long(id));
@@ -54,11 +51,18 @@ public class RecipeController {
             return "recipe/show";
     }
 
-    @RequestMapping("/recipe/{id}/update")
+    @GetMapping("/recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model){
         log.debug("Update recipe by id endpoint of RecipeController was invoked.");
             model.addAttribute("recipe", recipeService.getCommandById(new Long(id)));
             return "recipe/save";
+    }
+
+    @GetMapping("/recipe/{id}/delete")
+    public String deleteRecipeById(@PathVariable String id){
+        log.debug("Delete recipe by id endpoint of RecipeController was invoked.");
+        recipeService.deleteById(new Long(id));
+        return "redirect:/";
     }
 
     @PostMapping("/recipe")

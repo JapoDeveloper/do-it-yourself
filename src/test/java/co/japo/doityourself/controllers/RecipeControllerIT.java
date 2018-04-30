@@ -70,6 +70,10 @@ public class RecipeControllerIT {
 
         //when
         when(recipeService.list()).thenReturn(recipes);
+        MockMvc mock = MockMvcBuilders.standaloneSetup(recipeController).build();
+        mock.perform(get("/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/list"));
 
         //then
         assertEquals("recipe/list",recipeController.listRecipes(model));
@@ -77,10 +81,6 @@ public class RecipeControllerIT {
         verify(model,times(1)).addAttribute(eq("allRecipes"),listCaptor.capture());
         assertEquals(recipes.size(),listCaptor.getValue().size());
 
-        MockMvc mock = MockMvcBuilders.standaloneSetup(recipeController).build();
-        mock.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("recipe/list"));
     }
 
     @Test
@@ -91,16 +91,16 @@ public class RecipeControllerIT {
 
         //when
         when(recipeService.getById(anyLong())).thenReturn(recipe);
-
-        //then
-        assertEquals("recipe/show",recipeController.showRecipeById(RECIPE_ID+"",model));
-        verify(recipeService,times(1)).getById(anyLong());
-
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"));
+
+        //then
+        assertEquals("recipe/show",recipeController.showRecipeById(RECIPE_ID+"",model));
+        verify(recipeService,times(1)).getById(anyLong());
+
     }
 
     @Test
@@ -122,6 +122,8 @@ public class RecipeControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(view().name("recipe/save"));
+
+        verify(recipeService,times(1)).getCommandById(anyLong());
     }
 
     @Test
@@ -138,5 +140,16 @@ public class RecipeControllerIT {
                         .param("description",RECIPE_DESCRIPTION)
                 ).andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/"+RECIPE_ID+"/show"));
+
+        verify(recipeService,times(1)).saveRecipeCommand(any());
+    }
+
+    @Test
+    public void deleteRecipeById() throws Exception{
+        mockMvc.perform(get("/recipe/1/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        verify(recipeService,times(1)).deleteById(anyLong());
     }
 }
