@@ -1,6 +1,8 @@
 package co.japo.doityourself.controllers;
 
+import co.japo.doityourself.commands.IngredientCommand;
 import co.japo.doityourself.commands.RecipeCommand;
+import co.japo.doityourself.services.IngredientService;
 import co.japo.doityourself.services.MathService;
 import co.japo.doityourself.services.RecipeService;
 import org.junit.Before;
@@ -25,13 +27,15 @@ public class IngredientControllerIT {
     @Mock
     private RecipeService recipeService;
     @Mock
+    private IngredientService ingredientService;
+    @Mock
     private MathService mathService;
     MockMvc mockMvc;
 
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        ingredientController = new IngredientController(recipeService,mathService);
+        ingredientController = new IngredientController(recipeService,ingredientService,mathService);
         mockMvc = MockMvcBuilders.standaloneSetup(ingredientController).build();
     }
 
@@ -49,5 +53,19 @@ public class IngredientControllerIT {
                 .andExpect(view().name("recipe/ingredient/list"));
 
         verify(recipeService,times(1)).getCommandById(anyLong());
+    }
+
+    @Test
+    public void displayIngredientDetails() throws Exception{
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setId(1l);
+        ingredientCommand.setRecipeId(1l);
+
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(),anyLong())).thenReturn(ingredientCommand);
+
+        mockMvc.perform(get("/recipe/1/ingredients/1/show"))
+                .andExpect(view().name("recipe/ingredient/show"))
+                .andExpect(model().attributeExists("ingredient"))
+                .andExpect(status().isOk());
     }
 }
