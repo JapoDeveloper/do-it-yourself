@@ -74,26 +74,13 @@
                             <div class="form-row mt-3">
                                 <div class="col-md-4">
                                     <label for="recipeDifficulty">Difficulty</label>
-                                    <div id="recipeDifficulty" class="form-group">
-                                        <div class="form-check form-check-inline">
-                                            <input id="diffEasy" type="radio" name="recipeDifficulty"
-                                                   value="Easy" th:field="*{difficulty}"
-                                                   class="form-check-input">
-                                            <label for="diffEasy" class="form-check-label">Easy</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input id="diffModerate" type="radio" name="recipeDifficulty"
-                                                   value="Moderate" th:field="*{difficulty}"
-                                                   class="form-check-input">
-                                            <label for="diffModerate" class="form-check-label">Moderate</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input id="diffHard" type="radio" name="recipeDifficulty"
-                                                   value="Hard" th:field="*{difficulty}"
-                                                   class="form-check-input">
-                                            <label for="diffHard" class="form-check-label">Hard</label>
-                                        </div>
-                                    </div>
+                                    <select id="recipeDifficulty" th:field="*{difficulty}"
+                                        class="form-control">
+                                        <option th:each="difficultyEach : ${T(co.japo.doityourself.domain.Difficulty).values()}"
+                                                th:value="${difficultyEach.name()}"
+                                                th:text="${difficultyEach.name()}"
+                                        />
+                                    </select>
                                 </div>
                                 <div class="col">
                                     <label for="recipeCategories">Categories</label>
