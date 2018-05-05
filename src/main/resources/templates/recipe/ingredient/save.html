@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Do It Yourself</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container mt-4">
+        <form th:object="${ingredient}" th:action="@{'/recipe/'+${ingredient.recipeId}+'/ingredient'}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="row justify-content-center">
+                <div class="col">
+                    <p class="text-right">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        <a href="#" th:href="'/recipe/'+${ingredient.recipeId}+'/ingredients'">Return to ingredients</a>
+                    </p>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header" th:if="${id == null}">Creating new ingredient</h5>
+                <h5 class="card-header" th:if="${id != null}">Editing an ingredient</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col form-group">
+                            <label for="ingredientDescription">Description:</label>
+                            <input id="ingredientDescription" type="text" class="form-control"
+                                   th:field="*{description}">
+                        </div>
+                    </div>
+                    <div class="form-row form-inline">
+                        <div class="col">
+                            <label for="ingredientAmount">Amount:</label>
+                            <input id="ingredientAmount" type="number" class="form-control"
+                                   th:field="*{amount}">
+                        </div>
+                        <div class="col">
+                            <label for="ingredientUom">Unit of measure:</label>
+                            <select id="ingredientUom" class="form-control"
+                                    name="uom.id">
+                                <option th:value="${null}" th:text="'Not apply'"
+                                        th:selected="${ingredient.uom == null}">Not apply</option>
+                                <option th:each="uomEach : ${listOfUoms}"
+                                        th:value="${uomEach.id}"
+                                        th:selected="${ingredient.uom != null && uomEach.id.equals(ingredient.uom.id)}"
+                                        th:text="${uomEach.uom}">Each</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
+                            <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

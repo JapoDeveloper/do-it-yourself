@@ -2,6 +2,7 @@ package co.japo.doityourself.converters;
 
 import co.japo.doityourself.commands.IngredientCommand;
 import co.japo.doityourself.domain.Ingredient;
+import co.japo.doityourself.domain.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -29,6 +30,9 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         ingredient.setDescription(source.getDescription());
         ingredient.setAmount(source.getAmount());
         ingredient.setUom(converter.convert(source.getUom()));
+        if(source.getRecipeId() != null){
+            ingredient.setRecipe(new Recipe(source.getRecipeId()));
+        }
         return ingredient;
     }
 }

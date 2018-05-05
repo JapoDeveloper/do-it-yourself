@@ -24,8 +24,6 @@ public class RecipeServiceIT {
 
     @Autowired
     private RecipeServiceImpl recipeService;
-    @Autowired
-    private RecipeRepository recipeRepository;
 
     private final long RECIPE_ID = 3l;
     private final String RECIPE_DESCRIPTION = "Some text";

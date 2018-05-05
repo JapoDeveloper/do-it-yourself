@@ -45,10 +45,12 @@
                                         <a href="#" th:href="'/recipe/'+${recipe.id}+'/ingredients/'+${ingredient.id}+'/show'">View</a>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-success">Update</a>
+                                        <a href="#" th:href="'/recipe/'+${recipe.id}+'/ingredients/'+${ingredient.id}+'/update'"
+                                           class="text-success">Update</a>
                                     </td>
                                     <td>
-                                        <a href="#" class="text-danger">Delete</a>
+                                        <a href="#" th:href="'/recipe/'+${recipe.id}+'/ingredients/'+${ingredient.id}+'/delete'"
+                                           class="text-danger">Delete</a>
                                     </td>
                                 </tr>
                             </tbody>

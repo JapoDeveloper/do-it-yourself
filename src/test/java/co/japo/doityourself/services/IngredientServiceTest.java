@@ -1,6 +1,7 @@
 package co.japo.doityourself.services;
 
 import co.japo.doityourself.commands.IngredientCommand;
+import co.japo.doityourself.converters.IngredientCommandToIngredient;
 import co.japo.doityourself.converters.IngredientToIngredientCommand;
 import co.japo.doityourself.domain.Ingredient;
 import co.japo.doityourself.repositories.IngredientRepository;
@@ -28,12 +29,14 @@ public class IngredientServiceTest {
     @Mock
     private IngredientRepository ingredientRepository;
     @Mock
-    private IngredientToIngredientCommand converter;
+    private IngredientToIngredientCommand ingredientCommandConverter;
+    @Mock
+    private IngredientCommandToIngredient ingredientConverter;
 
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        ingredientService = new IngredientServiceImpl(ingredientRepository,converter);
+        ingredientService = new IngredientServiceImpl(ingredientRepository,ingredientCommandConverter,ingredientConverter);
     }
 
     @Test
@@ -48,7 +51,7 @@ public class IngredientServiceTest {
         ingredients.add(ingredient);
 
         when(ingredientRepository.findByRecipeId(anyLong())).thenReturn(ingredients);
-        when(converter.convert(any())).thenReturn(ingredientCommand);
+        when(ingredientCommandConverter.convert(any())).thenReturn(ingredientCommand);
 
         assertThat("List of ingredients empty when try to return with the recipe id",
                 ingredients.size(),equalTo(ingredientService.findByRecipeId(1l).size()));
@@ -64,9 +67,16 @@ public class IngredientServiceTest {
         ingredientCommand.setId(3l);
 
         when(ingredientRepository.findByRecipeIdAndId(anyLong(),anyLong())).thenReturn(Optional.of(ingredient));
-        when(converter.convert(any())).thenReturn(ingredientCommand);
+        when(ingredientCommandConverter.convert(any())).thenReturn(ingredientCommand);
 
         assertEquals(ingredientCommand.getId(),ingredientService.findByRecipeIdAndIngredientId(1l,3l).getId());
         verify(ingredientRepository,times(1)).findByRecipeIdAndId(anyLong(),anyLong());
+    }
+
+    @Test
+    public void deleteById(){
+        Long ingredientId = 1l;
+        ingredientService.deleteById(ingredientId);
+        verify(ingredientRepository,times(1)).deleteById(anyLong());
     }
 }
